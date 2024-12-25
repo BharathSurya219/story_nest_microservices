@@ -55,7 +55,7 @@ public class StoryNestSecurityConfig {
 				.sessionManagement(
 						sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/user/register", "/user/token", "/user/validate")
-						.permitAll())
+						.permitAll().anyRequest().authenticated())
 				.addFilterBefore(jwtAuthenticationFilter,
 						UsernamePasswordAuthenticationFilter.class)
 				.build();
