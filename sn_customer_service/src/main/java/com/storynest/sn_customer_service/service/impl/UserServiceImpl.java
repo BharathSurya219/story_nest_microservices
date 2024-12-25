@@ -17,8 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -75,7 +77,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<UserDTO> findAllCustomers() {
-		return List.of();
+		ModelMapper mapper = new ModelMapper();
+		return this.repository.findAll().stream()
+				.map(userEntity -> mapper.map(userEntity,UserDTO.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -87,11 +92,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO findById(Long userId) {
 		ModelMapper mapper = new ModelMapper();
-		var user = this.repository.findById(Math.toIntExact(userId))
+		return this.repository.findById(Math.toIntExact(userId))
+				.map(userEntity -> mapper.map(userEntity,UserDTO.class))
 				.orElseThrow(() -> new UserNotFoundException(String.format("No user found with the provided ID: %s", userId)));
-		UserDTO dto = new UserDTO();
-		mapper.map(dto,user);
-		return dto;
 	}
 
 	private void mergeCustomer(User user, UserDTO request) {
