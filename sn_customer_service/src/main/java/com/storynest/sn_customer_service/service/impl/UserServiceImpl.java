@@ -3,18 +3,21 @@ package com.storynest.sn_customer_service.service.impl;
 import com.storynest.sn_customer_service.enums.AccountStatus;
 import com.storynest.sn_customer_service.enums.Roles;
 import com.storynest.sn_customer_service.exception.UserAlreadyExistsException;
+import com.storynest.sn_customer_service.exception.UserNotFoundException;
 import com.storynest.sn_customer_service.repository.UserRepository;
 import com.storynest.sn_customer_service.service.UserService;
 import com.storynest.sn_customer_service.userDTO.UserDTO;
 import com.storynest.sn_customer_service.userEntity.User;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,4 +56,53 @@ public class UserServiceImpl implements UserService {
 		return userDTO;
 	}
 
+	@Override
+	public synchronized void deleteCustomer(String userId) {
+		this.repository.deleteById(Integer.valueOf(userId));
+	}
+
+	@Override
+	public UserDTO update(UserDTO userDTO) {
+		var user = this.repository.findById(Math.toIntExact(userDTO.getId()))
+						.orElseThrow(() -> new UserNotFoundException(
+				String.format("Cannot update user:: No user found with the provided ID: %s", userDTO.getId())
+		));
+		this.repository.save(user);
+		ModelMapper mapper = new ModelMapper();
+		mapper.map(user, userDTO);
+		return userDTO;
+	}
+
+	@Override
+	public List<UserDTO> findAllCustomers() {
+		return List.of();
+	}
+
+	@Override
+	public Boolean existsById(Long userId) {
+		return this.repository.findById(Math.toIntExact(userId))
+				.isPresent();
+	}
+
+	@Override
+	public UserDTO findById(Long userId) {
+		ModelMapper mapper = new ModelMapper();
+		var user = this.repository.findById(Math.toIntExact(userId))
+				.orElseThrow(() -> new UserNotFoundException(String.format("No user found with the provided ID: %s", userId)));
+		UserDTO dto = new UserDTO();
+		mapper.map(dto,user);
+		return dto;
+	}
+
+	private void mergeCustomer(User user, UserDTO request) {
+		if (StringUtils.isNotBlank(request.getFullName())) {
+			user.setFullName(request.getFullName());
+		}
+		if (StringUtils.isNotBlank(request.getEmail())) {
+			user.setEmail(request.getEmail());
+		}
+		if (StringUtils.isNotBlank(request.getUserName())) {
+			user.setUserName(request.getUserName());
+		}
+	}
 }
