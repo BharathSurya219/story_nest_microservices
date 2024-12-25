@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include
+		resource="org/springframework/boot/logging/logback/defaults.xml" />
+	<property name="LOG_FILE" value="C:/logs/logfile.log" />
+
+	<appender name="FILE-ROLLING"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_FILE}</file>
+
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>C:/logs/archived/app.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<!-- each archived file, size max 1MB -->
+			<maxFileSize>1MB</maxFileSize>
+			<!-- total size of all archive files, if total size > 50MB, it will delete 
+				old archived file -->
+			<totalSizeCap>50MB</totalSizeCap>
+			<!-- 60 days to keep -->
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M\(%line\) - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+
+	<appender name="CONSOLE"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>
+				%date{dd MMM yyyy;HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger.%M\(%line\) - %msg%n
+			</Pattern>
+		</layout>
+	</appender>
+
+
+	<logger name="com.storynest.sn_customer_service" level="info"
+		additivity="false">
+		<appender-ref ref="FILE-ROLLING" />
+	</logger>
+	
+	<logger name="com.storynest.sn_customer_service" level="info"
+		additivity="false">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+
+	<logger name="com.storynest.sn_customer_service" level="error"
+		additivity="false">
+		<appender-ref ref="FILE-ROLLING" />
+	</logger>
+
+	<logger name="com.storynest.sn_customer_service" level="trace"
+		additivity="false">
+		<appender-ref ref="FILE-ROLLING" />
+	</logger>
+
+	<root level="error">
+		<appender-ref ref="FILE-ROLLING" />
+	</root>
+
+	<logger name="com.storynest.sn_customer_servicet" level="debug"
+		additivity="false">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	
+	<root level="error">
+		<appender-ref ref="CONSOLE" />
+	</root>
+	<root level="warn">
+		<appender-ref ref="CONSOLE" />
+	</root>
+	
+</configuration>

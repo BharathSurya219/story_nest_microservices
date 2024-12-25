@@ -1,0 +1,30 @@
+spring:
+  application:
+        name: sn_notification_service
+#  messages:
+#    basename: ValidationMessage
+#  datasource:
+#    url: jdbc:postgresql://localhost:5433/storynest
+#    driver-class-name: org.postgresql.Driver
+#    username: postgres
+#    password: 123456
+
+##Redis configuartion
+#  session:
+#    redis:
+#       store-type: redis
+#       namespace: session
+#       flush-mose: on-save
+#  redis:
+#     host: localhost
+#     port: 6379
+
+eureka:
+  client:
+    service:
+      defaultZone: http://localhost:8761/eureka/
+    instance:
+      preferIpAddress:true
+
+server:
+   port: 8003

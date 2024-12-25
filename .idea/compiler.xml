@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="sn_customer_service" />
+        <module name="sn_post_service" />
+        <module name="sn_notification_service" />
+        <module name="service-discover" />
+        <module name="sn_gateway" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="service-discover" options="-parameters" />
+      <module name="sn_customer_service" options="-parameters" />
+      <module name="sn_gateway" options="-parameters" />
+      <module name="sn_notification_service" options="-parameters" />
+      <module name="sn_post_service" options="-parameters" />
+    </option>
+  </component>
+</project>

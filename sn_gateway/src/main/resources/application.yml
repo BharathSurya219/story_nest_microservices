@@ -1,0 +1,50 @@
+spring:
+  application:
+        name: sn_gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: sn-user-service
+          uri: http://localhost:8001
+          predicates:
+            - Path= /user/**
+          filters:
+            - StripPrefix= 1
+
+        - id: sn-post-service
+          uri: http://localhost:8002
+          predicates:
+            - Path= /post/**
+          filters:
+            - AuthenticationFilter
+            - StripPrefix= 1
+
+        - id: sn-notification-service
+          uri: http://localhost:8003
+          predicates:
+            - Path= /notification/**
+          filters:
+            - AuthenticationFilter
+            - StripPrefix= 1
+
+  ##Redis configuartion
+  session:
+    redis:
+       store-type: redis
+       namespace: session
+       flush-mose: on-save
+  redis: 
+     host: localhost
+     port: 6379
+eureka:
+    client:
+      service:
+         defaultZone: http://localhost:8761/eureka/
+      instance:
+         preferIpAddress:true
+
+server:
+   port:8099
