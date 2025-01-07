@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/service-discover/pom.xml" />
         <option value="$PROJECT_DIR$/sn_post_service/pom.xml" />
         <option value="$PROJECT_DIR$/sn_notification_service/pom.xml" />
+        <option value="$PROJECT_DIR$/follow_service/pom.xml" />
       </list>
     </option>
   </component>
