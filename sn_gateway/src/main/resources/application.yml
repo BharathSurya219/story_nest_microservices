@@ -30,6 +30,14 @@ spring:
             - AuthenticationFilter
             - StripPrefix= 1
 
+        - id: sn-follow-service
+        - uri: http://localhost:8004
+        - predicates:
+        - Path= /follow/**
+        - filters:
+        - AuthenticationFilter
+        - StripPrefix= 1
+
   ##Redis configuartion
   session:
     redis:
